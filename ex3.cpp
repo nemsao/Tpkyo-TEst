@@ -1,27 +1,42 @@
-def is_balanced_string(s):
-    stack = []
-    opening_brackets = {'{', '[', '('}
-    closing_brackets = {'}', ']', ')'}
-    bracket_pairs = {'{': '}', '[': ']', '(': ')'}
+#include <iostream>
+#include <stack>
+#include <string>
 
-    for char in s:
-        if char in opening_brackets:
-            stack.append(char)
-        elif char in closing_brackets:
-            if not stack:
-                return False
-            top = stack.pop()
-            if bracket_pairs[top] != char:
-                return False
-    
-    return len(stack) == 0
+bool isBalancedString(const std::string& s) {
+    std::stack<char> brackets;
+    std::string openingBrackets = "{[(";
+    std::string closingBrackets = "}])";
+    std::string bracketPairs = "{}[]()";
 
+    for (char c : s) {
+        if (openingBrackets.find(c) != std::string::npos) {
+            brackets.push(c);
+        } else if (closingBrackets.find(c) != std::string::npos) {
+            if (brackets.empty()) {
+                return false;
+            }
+            char top = brackets.top();
+            brackets.pop();
+            if (bracketPairs.find(top) != bracketPairs.find(c) - 1) {
+                return false;
+            }
+        }
+    }
 
-# Đọc số lượng test case
-N = int(input())
+    return brackets.empty();
+}
 
-# Đọc và kiểm tra từng test case
-for _ in range(N):
-    test_case = input().strip()
-    is_balanced = is_balanced_string(test_case)
-    print(is_balanced)
+int main() {
+    int N;
+    std::cin >> N;
+    std::cin.ignore(); // Ignore the newline character after N
+
+    for (int i = 0; i < N; i++) {
+        std::string test_case;
+        std::getline(std::cin, test_case);
+        bool is_balanced = isBalancedString(test_case);
+        std::cout << (is_balanced ? "true" : "false") << std::endl;
+    }
+
+    return 0;
+}
